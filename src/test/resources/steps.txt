@@ -2,6 +2,7 @@ hoverctl start
 
 BASIC
 
+curl time.jsontest.com
 hoverctl mode capture
 curl time.jsontest.com --proxy localhost:8500
 hoverctl mode simulate
@@ -25,17 +26,6 @@ curl -i --data "transactionid=2" httpbin.org/post --proxy localhost:8500
 hoverctl import modify.json
 curl -i --data "transactionid=2" httpbin.org/post --proxy localhost:8500
 
-STATE
-
-*check out state.json*
-
-hoverctl import state.json
-hoverctl mode simulate
-curl test.com --proxy localhost:8500
-hoverctl state-store get-all
-do above several times
-
-
 TEMPLATE
 
 *check out template.json*
@@ -46,6 +36,17 @@ curl 'test.com/?param=wohooo' --proxy localhost:8500
 curl 'test.com/?param=yaaay' --proxy localhost:8500
 
 https://docs.hoverfly.io/en/latest/pages/keyconcepts/templating/templating.html
+
+
+STATE
+
+*check out state.json*
+
+hoverctl import state.json
+hoverctl mode simulate
+curl test.com --proxy localhost:8500
+hoverctl state-store get-all
+do above several times
 
 SHOW SPRING CODE
 

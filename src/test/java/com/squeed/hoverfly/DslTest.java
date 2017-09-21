@@ -33,11 +33,13 @@ public class DslTest {
 
     @Test
     public void time_dsl() {
+
         String expectedResponse =   "{\n" +
                 "   \"time\": \"08:00:00 PM\",\n" +
                 "   \"milliseconds_since_epoch\": 1505804954011,\n" +
                 "   \"date\": \"01-01-2000\"\n" +
                 "}\n";
+
         hoverflyRule.simulate(dsl(
                 service("time.jsontest.com")
                         .get("/")
@@ -63,7 +65,7 @@ public class DslTest {
                 service("time.jsontest.com")
                         .get("/")
                         .willReturn(success(expectedResponse, "application/json"))
-                        .andDelay(1, TimeUnit.SECONDS)
+                        .andDelay(5, TimeUnit.SECONDS)
                         .forAll()));
 
         StopWatch stopWatch = new StopWatch();
@@ -71,7 +73,7 @@ public class DslTest {
         testRestTemplate.getForEntity("/time", String.class);
         stopWatch.stop();
 
-        assertTrue(stopWatch.getTotalTimeMillis() > 1000);
+        assertTrue(stopWatch.getTotalTimeMillis() > 5000);
     }
 
     @Test

@@ -18,11 +18,11 @@ import static io.specto.hoverfly.junit.core.SimulationSource.defaultPath;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class SimplestTest {
 
-    @ClassRule
-    public static HoverflyRule hoverflyRule = HoverflyRule.inSimulationMode();
-
     @Autowired
     private TestRestTemplate testRestTemplate;
+
+    @ClassRule
+    public static HoverflyRule hoverflyRule = HoverflyRule.inSimulationMode();
 
     @Test
     public void time_frozen() throws JSONException {

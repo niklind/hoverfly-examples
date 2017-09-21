@@ -25,31 +25,6 @@
           "status": 200,
           "templated": true
         }
-      },
-      {
-        "request": {
-          "destination": {
-            "exactMatch": "test.com"
-          },
-          "method": {
-            "exactMatch": "GET"
-          },
-          "path": {
-            "exactMatch": "/"
-          },
-          "query": {
-            "globMatch": "param=*"
-          },
-          "scheme": {
-            "exactMatch": "http"
-          }
-        },
-        "response": {
-          "body": "{\n   \"param\": \"{{ Request.QueryParam.param }}\"\n}\n",
-          "encodedBody": false,
-          "status": 200,
-          "templated": true
-        }
       }
     ]
   },
