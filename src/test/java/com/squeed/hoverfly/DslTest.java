@@ -13,8 +13,6 @@ import org.springframework.util.StopWatch;
 
 import java.util.concurrent.TimeUnit;
 
-import static io.specto.hoverfly.junit.core.HoverflyConfig.configs;
-import static io.specto.hoverfly.junit.core.SimulationSource.defaultPath;
 import static io.specto.hoverfly.junit.core.SimulationSource.dsl;
 import static io.specto.hoverfly.junit.dsl.HoverflyDsl.service;
 import static io.specto.hoverfly.junit.dsl.ResponseCreators.badRequest;
@@ -25,63 +23,48 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class TimeAPITest {
+public class DslTest {
 
     @ClassRule
-    public static HoverflyRule hoverflyRule = HoverflyRule.inSimulationMode(configs().adminPort(9000));
+    public static HoverflyRule hoverflyRule = HoverflyRule.inSimulationMode();
 
     @Autowired
     private TestRestTemplate testRestTemplate;
 
     @Test
-    public void time_frozen() {
-
-        String expectedResponse =   "{\n" +
-                                    "   \"time\": \"07:09:14 AM\",\n" +
-                                    "   \"milliseconds_since_epoch\": 1505804954011,\n" +
-                                    "   \"date\": \"09-19-2017\"\n" +
-                                    "}\n";
-        hoverflyRule.simulate(defaultPath("time.json"));
-
-        ResponseEntity<String> response = testRestTemplate.getForEntity("/time", String.class);
-
-        assertEquals(expectedResponse, response.getBody());
-    }
-
-    @Test
     public void time_dsl() {
         String expectedResponse =   "{\n" +
-                                    "   \"time\": \"08:00:00 PM\",\n" +
-                                    "   \"milliseconds_since_epoch\": 1505804954011,\n" +
-                                    "   \"date\": \"01-01-2000\"\n" +
-                                    "}\n";
+                "   \"time\": \"08:00:00 PM\",\n" +
+                "   \"milliseconds_since_epoch\": 1505804954011,\n" +
+                "   \"date\": \"01-01-2000\"\n" +
+                "}\n";
         hoverflyRule.simulate(dsl(
                 service("time.jsontest.com")
-                    .get("/")
-                    .willReturn(success(expectedResponse, "application/json"))));
+                        .get("/")
+                        .willReturn(success(expectedResponse, "application/json"))));
 
         ResponseEntity<String> response = testRestTemplate.getForEntity("/time", String.class);
 
         assertEquals(expectedResponse, response.getBody());
         hoverflyRule.verify(
                 service("time.jsontest.com")
-                    .get("/"),
-                    times(1));
+                        .get("/"),
+                times(1));
     }
 
     @Test
     public void time_delay() {
         String expectedResponse =   "{\n" +
-                                    "   \"time\": \"08:00:00 PM\",\n" +
-                                    "   \"milliseconds_since_epoch\": 1505804954011,\n" +
-                                    "   \"date\": \"01-01-2000\"\n" +
-                                    "}\n";
+                "   \"time\": \"08:00:00 PM\",\n" +
+                "   \"milliseconds_since_epoch\": 1505804954011,\n" +
+                "   \"date\": \"01-01-2000\"\n" +
+                "}\n";
         hoverflyRule.simulate(dsl(
                 service("time.jsontest.com")
                         .get("/")
                         .willReturn(success(expectedResponse, "application/json"))
                         .andDelay(1, TimeUnit.SECONDS)
-                            .forAll()));
+                        .forAll()));
 
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();

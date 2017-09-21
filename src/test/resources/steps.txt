@@ -1,0 +1,53 @@
+hoverctl start
+
+BASIC
+
+hoverctl mode capture
+curl time.jsontest.com --proxy localhost:8500
+hoverctl mode simulate
+curl time.jsontest.com --proxy localhost:8500
+hoverctl export recorded_response.json
+
+*check recorded_response.json
+
+MODIFY
+
+hoverctl delete
+hoverctl mode capture
+curl -i --data "transactionid=3" httpbin.org/post --proxy localhost:8500
+hoverctl export modify.json
+hoverctl mode simulate
+curl -i --data "transactionid=3" httpbin.org/post --proxy localhost:8500
+curl -i --data "transactionid=2" httpbin.org/post --proxy localhost:8500
+
+*modify recording with globmatch wildcard and delay*
+
+hoverctl import modify.json
+curl -i --data "transactionid=2" httpbin.org/post --proxy localhost:8500
+
+STATE
+
+*check out state.json*
+
+hoverctl import state.json
+hoverctl mode simulate
+curl test.com --proxy localhost:8500
+hoverctl state-store get-all
+do above several times
+
+
+TEMPLATE
+
+*check out template.json*
+
+hoverctl import template.json
+hoverctl mode simulate
+curl 'test.com/?param=wohooo' --proxy localhost:8500
+curl 'test.com/?param=yaaay' --proxy localhost:8500
+
+https://docs.hoverfly.io/en/latest/pages/keyconcepts/templating/templating.html
+
+SHOW SPRING CODE
+
+https://docs.hoverfly.io/en/latest/pages/reference/api/api.html
+
