@@ -1,0 +1,66 @@
+{
+  "data": {
+    "globalActions": {
+      "delays": []
+    },
+    "pairs": [
+      {
+        "request": {
+          "method": {
+            "exactMatch": "GET"
+          },
+          "path": {
+            "exactMatch": "/"
+          }
+        },
+        "response": {
+          "body": "{\n   \"state\": \"foo\"\n}\n",
+          "encodedBody": false,
+          "status": 200,
+          "templated": false,
+          "transitionsState" : {
+            "current" : "bar",
+            "bar" : "true"
+          },
+          "removesState" : [
+            "foo"
+          ]
+        }
+      },
+      {
+        "request": {
+          "body": {
+            "exactMatch": ""
+          },
+          "method": {
+            "exactMatch": "GET"
+          },
+          "path": {
+            "exactMatch": "/"
+          },
+          "requiresState": {
+            "current": "bar"
+          }
+        },
+        "response": {
+          "body": "{\n   \"state\": \"bar\"\n}\n",
+          "encodedBody": false,
+          "status": 200,
+          "templated": false,
+          "transitionsState" : {
+            "current" : "foo",
+            "foo" : "true"
+          },
+          "removesState" : [
+            "bar"
+          ]
+        }
+      }
+    ]
+  },
+  "meta": {
+    "hoverflyVersion": "v0.14.0",
+    "schemaVersion": "v4",
+    "timeExported": "2017-09-08T15:56:08+02:00"
+  }
+}
